@@ -12,7 +12,7 @@ Even if with only 59 categories, maintaining a job board is still a daunting job
 2. Adopted **beautifulsoup** and **NLTK** to perform tokenization, remove stop words, html tags, and lemmatize words. 
 3. (Approach 1) Engineered features with **bag of words** and applied **TF-IDF** to re-weight the features.
 4. (Approach 2) Projected each word to its vector representation with **word2vec** algorithm. Aggregated the embedding vectors of all words in a job description together as our new feature space. This is a cleverer way to reduce dimension, without lossing much information. There are two ways for the aggregation:
-    - Average of Vector Embedding: We average all the embedding vectors in a given job decription to finally get a 1000 dimensions vector as our features for that job.
+    - Average of Vector Embedding: We average all the embedding vectors in a given job decription to finally get a 500 dimensions vector as our features for that job.
     - We cluster the words into some bags according to the embedding vectors. Then we count the frequency of each bag that the words in a given job description fall into, use this frequency table as our final features for that job.
 5. Applied three machine learning methods–SVM, Random Forest and Naive Bayes on data from both approaches.
-4. Evaluated and compared prediction accuracy of different approaches.
+4. Evaluated and compared prediction accuracy of different approaches. The second approach with clustering aggregation reached to 68.55% prediction accuracy, better than the first approach where prediction accuracy is 63.4%, although not too much.
