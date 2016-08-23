@@ -1,6 +1,6 @@
 # Web Scraping on Monster.com and Jobs Classification
 
-In this project, we crawled the largest job board in US -- Monster with **urlib2**, **bs4** and trained three **machine learning** models to classify those job texts into 59 categories given by Monster.com. During the whole procedure, we also applied some **Natural Language Processing** techniques to help process the texts. 
+In this project, we crawled the largest job board in US -- Monster with **urlib2**, **bs4** and trained three **machine learning** models with **Scikit-Learn** to classify those job texts into 59 categories given by Monster.com. During the whole procedure, we also applied some **Natural Language Processing** techniques to help process the texts. 
 
 > Main Idea of this Project
 
