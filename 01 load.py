@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Aug 19 17:57:17 2016
+Load in data from data folder which contains several job categories
+be sure to unzip part1 and part2 in to the data folder and create a folder called 
+data_formatted  for further use
 
-@author: kaleidoscope
+1. load data in recursively
+2. remove html tags, remove punctuations, split data into training data and testing data
+3. tokenization, remove stop words, and lemmatize the words
+4. save training and testing data into data_formated folder.
+
 """
 import glob
 import re
@@ -22,11 +28,13 @@ for d in dirs:
         lines = ' '.join(op.readlines())
         op.close()
         lines = BS(lines, "html.parser").getText(separator=u' ').lower()
+        ## These words exist in almost all jobs and help nothing with prediction, so remove them
         lines = re.sub('(responsibilities|requirements?|qualifications?|job summary|about us|descriptions?)', '', lines)
         lines =  re.sub("[^a-zA-Z]", ' ', lines)
         lines = re.sub(' +', ' ', lines)
         cls = re.findall('data/(.+)/page', file)[0]
-        all_jobs.setdefault(cls, []).append(lines)
+        ## create empty list when no matched key, otherwise, append the job description in to the corresponding value
+        all_jobs.setdefault(cls, []).append(lines) 
 
 ##split into train_data and test_data
 num = [len(x) for x in all_jobs.values()]

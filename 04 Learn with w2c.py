@@ -1,10 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Two approaches to generate new feature space with word2vec -- Embedding Vectorizer
-Averaging and clustering
+As we have seen in the last script, each word has been projected to a 500 dimensions 
+vector. We have also left out words with document-frequency less than 5 times, those words
+help little with prediction.
+
+There are two ways to reduce dimention according to the word2vec result
+
+1. Average of Vector Embedding: We average all the embedding vectors in a given 
+   job decription(each job description has many words, each word corresponds to a vector)
+   to finally get a 500 dimensions vector as our features for that job.
+2. We cluster the words into some bags according to the embedding vectors. Then we count the 
+   frequency of each bag that the words in a given job description fall into, use this frequency
+   table as our final features for that job. 
+
 """
 
-##Embedding Vectorizer Averaging
+
 import numpy as np
 from gensim.models import Word2Vec
 import pandas as pd
@@ -12,10 +23,12 @@ from pandas import DataFrame
 from sklearn.cluster import KMeans
 from three_MLs import train_algo
 
-model = Word2Vec.load("./data_formated/100featuresword2vecmodel")
+model = Word2Vec.load("./data_formated/word2vecmodel")
 train_df = pd.read_pickle('./data_formated/train_df')
 test_df = pd.read_pickle('./data_formated/test_df')
 
+## reshape the model result into a data frame with two columns, the word and it's 
+## corresponding embedding vector
 def mapmodel(model):
     EmbedVec = []
     for idx, key in enumerate(model.index2word):
@@ -26,7 +39,7 @@ def mapmodel(model):
 EmbedVec = DataFrame(mapmodel(model), columns = ['word', 'features'])
 EmbedVec = EmbedVec.set_index('word')
 
-## approach Embedding Vector Averaging
+## Approach1: Embedding Vector Averaging
 def MeanEmbedVec(df, EmbedVec):
     featureVec = np.zeros((df.shape[0], EmbedVec['features'][0].shape[0]))
     for i, doc in enumerate(df['description']):
@@ -35,35 +48,34 @@ def MeanEmbedVec(df, EmbedVec):
         mean_feature = wordvecs['features'].mean(skipna=True)
         featureVec[i,:] = mean_feature
     return featureVec
+
+## new feature space from Embedding Vector Averaging
+
 MeanVec_train = MeanEmbedVec(train_df, EmbedVec)
 MeanVec_test = MeanEmbedVec(test_df, EmbedVec)
 
 ## three models---------------------------------------------------------
 
-train_algo(MeanVec_train, train_df['description'], MeanVec_test, test_df['description'])
+train_algo(MeanVec_train, train_df['category'], MeanVec_test, test_df['category'])
 ##----------------------------------------------------------------------
 
-## approach clustering:
+## Approach2: clustering:
 
-# Set "k" (num_clusters) to be 1/5th of the vocabulary size, or an
-# average of 5 words per cluster
+# Set number of clusters to be 0.2 of the vocabulary size
 word_vectors = model.syn0
 num_clusters = word_vectors.shape[0] / 5
 
-# Initalize a k-means object and use it to extract centroids
+## initialize kmeans algorithm
 kmeans_clustering = KMeans( n_clusters = num_clusters )
 idx = kmeans_clustering.fit_predict( word_vectors )
 
+##create word centroid map to map each word to its corresponding centroid index
 word_centroid_map = list(zip( model.index2word, idx ))
 word_centroid_map = DataFrame(word_centroid_map, columns = ['word','cluster'])
 
-# For the first 10 clusters
-for cluster in xrange(0,10):
-    #
-    # Print the cluster number  
+#Find all words for the first 10 clusters, we can see the clusters make sense
+for cluster in xrange(0,10):  
     print "\nCluster %d" % cluster
-    #
-    # Find all of the words for that cluster number, and print them out
     idx = np.where(word_centroid_map['cluster'] == cluster)[0]
     words = word_centroid_map['word'][idx]
     print words
@@ -78,32 +90,13 @@ def ClustersVec(df, word_centroid_map, num_clusters):
         freq = wordvecs.dropna().astype('int')['cluster'].value_counts()
         featureVec[i,freq.index] = freq.values
     return featureVec
-    
+
+## new feature space from clustering:  
 ClusterVec_train = ClustersVec(train_df, word_centroid_map, num_clusters)
 ClusterVec_test = ClustersVec(test_df, word_centroid_map, num_clusters)
 
 ## three models---------------------------------------------------------
-## Approach 1: random forest
-train_algo(ClusterVec_train, train_df['description'], ClusterVec_test, test_df['description'])
+train_algo(ClusterVec_train, train_df['category'], ClusterVec_test, test_df['category'])
 
 ##----------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
