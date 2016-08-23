@@ -13,6 +13,6 @@ Even if with only 59 categories, maintaining a job board is still a daunting job
 3. (Approach 1) Engineered features with **bag of words** and applied **TF-IDF** to re-weight the features.
 4. (Approach 2) Projected each word to its vector representation with **word2vec** algorithm. Aggregated the embedding vectors of all words in a job description together as our new feature space. This is a cleverer way to reduce dimension, without lossing much information. There are two ways for the aggregation:
     - Average of Vector Embedding: We average all the embedding vectors in a given job decription to finally get a 500 dimensions vector as our features for that job.
-    - We cluster the words into some bags according to the embedding vectors using **K-Means**. Then we count the frequency of each bag that the words in a given job description fall into, use this frequency table as our final features for that job.
+    - We cluster the words into some bags according to the embedding vectors using **K-Means**. Then we count the frequency of each bag that the words in a given job description fall into, use this frequency table as our features for that job. Finally, we also applied **TF-IDF** to re-weight the features.
 5. Applied three machine learning methods–SVM, Random Forest and Naive Bayes on data from both approaches.
 4. Evaluated and compared prediction accuracy of different approaches. 
