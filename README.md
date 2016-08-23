@@ -15,4 +15,4 @@ Even if with only 59 categories, maintaining a job board is still a daunting job
     - Average of Vector Embedding: We average all the embedding vectors in a given job decription to finally get a 500 dimensions vector as our features for that job.
     - We cluster the words into some bags according to the embedding vectors using **K-Means**. Then we count the frequency of each bag that the words in a given job description fall into, use this frequency table as our features for that job. Finally, we also applied **TF-IDF** to re-weight the features.
 5. Applied three machine learning methods–SVM, Random Forest and Naive Bayes on data from both approaches.
-4. Evaluated and compared prediction accuracy of different approaches. 
+4. Evaluated and compared prediction accuracy of different approaches. We found SVM using vector representation features (aggregated by clustering) has the biggest prediction accuracy, it's 67.53%. This is far from perfect, but it's definitely much more accurate than classify randomly, for which the correct rate is only 1.7% (1/59)
