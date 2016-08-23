@@ -67,6 +67,7 @@ downsampling = 1e-3   # Downsample setting for frequent words
 model = word2vec.Word2Vec(w2c_data, workers=num_workers, min_count = min_word_count, \
             size=num_features, window = context, sample = downsampling)
 
+##save memory
 model.init_sims(replace=True)
 
 ##save model to the data_formated folder
