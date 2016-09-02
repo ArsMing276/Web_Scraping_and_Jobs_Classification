@@ -11,7 +11,7 @@ Even if with only 59 categories, maintaining a job board is still a daunting job
 1. Crawled approximately 120 thousands raw job descriptions within 59 categories on Monster.com as our training data.
 2. Adopted **beautifulsoup** and **NLTK** to perform tokenization, remove stop words, html tags, and lemmatize words. 
 3. (Feature Engineering Approach 1) Engineered features with **bag of words** and applied **TF-IDF** to re-weight the features.
-4. (Feature Engineering Approach 2) Represented each document as a vector of probabilities of 100 potential topics that this document may contain from **Latent Dirichlet Allocation** result.   
+4. (Feature Engineering Approach 2) Tranformed from bag-of-words counts into a topic space of lower dimensionality. In detail, we represented each document as a vector of probability distribution over 100 potential topics from **Latent Dirichlet Allocation** result.  
 5. (Feature Engineering Approach 3) Projected each word to its vector representation with **word2vec** algorithm. Aggregated the embedding vectors of all words in a job description as our new feature space. There are two ways for the aggregation:
     - Average of Vector Embedding: We average all the embedding vectors in a given job decription to finally get a 500 dimensions vector as our features for that job.
     - Clustering on Vector Embedding: We cluster the words into some bags according to the embedding vectors using **K-Means**. Then we count the frequency of each bag that the words in a given job description fall into, use this frequency table as our features for that job. Finally, we also applied **TF-IDF** to re-weight the features.
