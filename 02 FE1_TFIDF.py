@@ -1,8 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Create Features from Bag of Words and use TF-IDF to re-weight the features
+Feature Engineering Approach1: Bag of words plus TFIDF
+Create Features from Bag of Words and use TF-IDF to re-weight the features. 
 
 Adopted three models -- random forest, naive bayes and SVM to train our data
+
+
+by Tf-idf, even though we re-weighted words to help with prediction, this still has two constraint
+ 1. we could only use part of the words due to the dimensionality constraint, in other word, some infomation was ignored.
+ 2. Even among the kept words, some are useless. For example, diligent, every employer likes this but not all 
+    companies would explicitly list this as a requirement. Thus this word is neither too frequenct nor too
+    infrequent. Even it was kept in our final word list, it helps nothing in the classification.
+    We will try to summarize words (features) with word2vec algorithm hopefully to get a better prediction.
+ 3. We will try two additional feature engineering approaches, Latent Dirichilet Allocation and word2vec.
+    Both of them can achieve dimensionality reduction without losing much information.
 """
 import numpy as np
 import pandas as pd
@@ -39,13 +50,6 @@ train_algo(train_features, train_df['category'], test_features, test_df['categor
 
 ##----------------------------------------------------------------------
 
-
-##by Tf-idf, even though we re-weighted words to help with prediction, this still has two constraint
-## 1. we could only use part of the words due to the dimensionality constraint, in other word, some infomation was ignored.
-## 2. Even among the kept words, some are useless. For example, diligent, every employer likes this but not all 
-##    companies would explicitly list this as a requirement. Thus this word is neither too frequenct nor too
-##   infrequent. Even it was kept in our final word list, it helps nothing in the classification.
-## We will try to summarize words (features) with word2vec algorithm hopefully to get a better prediction.
 
 
 
