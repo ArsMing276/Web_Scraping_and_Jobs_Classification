@@ -36,7 +36,7 @@ corpus = [train_dict.doc2bow(text) for text in train_doc]
 ## (one full pass), then updates the model, then another pass, another update...
 
 lda = models.ldamodel.LdaModel(corpus, id2word=train_dict, 
-                               num_topics=300, update_every=1, 
+                               num_topics=100, update_every=1, 
                                chunksize=10000, passes=1)
 
 lda_name = "./data_formated/ldamodel"
@@ -62,9 +62,9 @@ corpus_ts = [test_dict.doc2bow(text) for text in test_doc]
 lda.print_topics(20)
 
 
-## Next, we will use get_document_topics to get the probabilities of the 300 topics
-## that each document contains, will transform both training and test data to a
-## new feature space
+## Next, we will use 'get_document_topics' to get the probability distribution 
+## over the 100 topics for each document. We will transform both training and 
+## test data to its topic feature space
 
 train_topics = lda.get_document_topics(corpus)
 test_topics = lda.get_document_topics(corpus_ts)
