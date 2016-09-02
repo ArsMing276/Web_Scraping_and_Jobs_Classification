@@ -11,7 +11,6 @@ by Tf-idf, even though we re-weighted words to help with prediction, this still 
  2. Even among the kept words, some are useless. For example, diligent, every employer likes this but not all 
     companies would explicitly list this as a requirement. Thus this word is neither too frequenct nor too
     infrequent. Even it was kept in our final word list, it helps nothing in the classification.
-    We will try to summarize words (features) with word2vec algorithm hopefully to get a better prediction.
  3. We will try two additional feature engineering approaches, Latent Dirichilet Allocation and word2vec.
     Both of them can achieve dimensionality reduction without losing much information.
 """
